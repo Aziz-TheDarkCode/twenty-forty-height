@@ -4,6 +4,8 @@ import 'package:twenty_forty_eight/constants/colorscheme.dart';
 import 'package:twenty_forty_eight/providers/game_provider.dart';
 import 'package:twenty_forty_eight/ui/widgets/board.dart';
 import 'package:twenty_forty_eight/ui/widgets/controls/reset.dart';
+import 'package:twenty_forty_eight/ui/widgets/controls/score.dart';
+import 'package:twenty_forty_eight/ui/widgets/header.dart';
 
 void main() {
   runApp(ChangeNotifierProvider(
@@ -23,24 +25,7 @@ class MainApp extends StatelessWidget {
         body: Container(
           margin: EdgeInsets.all(20),
           child: Column(
-            children: [
-              Row(
-                children: <Widget>[
-                  Text(
-                    "2048",
-                    style: TextStyle(
-                        fontSize: 40,
-                        fontWeight: FontWeight.bold,
-                        color: textColor),
-                  ),
-                  Reset(),
-                  gameProvider.gameBoard.isGameOver()
-                      ? Text("Game Over")
-                      : Text("fffff")
-                ],
-              ),
-              Board()
-            ],
+            children: [Header(), Board()],
           ),
         ),
       ),

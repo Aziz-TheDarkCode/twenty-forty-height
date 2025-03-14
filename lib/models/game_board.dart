@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter_swipe_detector/flutter_swipe_detector.dart';
 import 'package:twenty_forty_eight/models/tile.dart';
 
 class GameBoard {
@@ -17,7 +18,7 @@ class GameBoard {
   List<Tile> get grid => _grid;
   void _addRandomTiles() {
     int tilesAdded = 0;
-    while (tilesAdded < 2) {
+    while (tilesAdded < 3) {
       spawnNewTile();
       tilesAdded++;
     }
@@ -46,36 +47,82 @@ class GameBoard {
     return emptyCells.isEmpty;
   }
 
-  move() {
-    List<Tile> compactedArray = grid.where((tile) => tile.value != 0).toList();
-    for (int col = 0; col < size; col++) {
-      print("Column $col:");
-      for (int row = 0; row < size; row++) {
-        int index = row * size + col;
-        print("Tile at ($row, $col) => Value: ${_grid[index].value}");
-      }
-    }
-    _grid = compactedArray;
-  }
-
-  List<Tile> compactRow(List<Tile> row) {
-    List<Tile> compactedRow = row.where((tile) => tile.value != 0).toList();
-    while (compactedRow.length < row.length) {
-      compactedRow.add(Tile(
-          value: 0, col: compactedRow.length, row: row.indexOf(row.first)));
-    }
-    return compactedRow;
-  }
-
-  void moveLeft() {
+  void moveHorizontally({SwipeDirection direction = SwipeDirection.left}) {
     for (int row = 0; row < size; row++) {
       List<int> currentRow = [];
-      print("Row ${row + 1}:");
       for (int col = 0; col < size; col++) {
         int index = row * size + col;
         currentRow.add(_grid[index].value);
-        print("Tile at ($row, $col) => Value: ${_grid[index].value}");
+      }
+      List<int> newRow;
+      if (direction == SwipeDirection.left) {
+        newRow = compactRow(row: currentRow, direction: "left");
+      } else {
+        newRow = compactRow(row: currentRow, direction: "right");
+      }
+
+      for (int col = 0; col < size; col++) {
+        int index = row * size + col;
+        _grid[index].updateValue = newRow[col];
       }
     }
+  }
+
+  void moveVertically({SwipeDirection direction = SwipeDirection.up}) {
+    for (int col = 0; col < size; col++) {
+      List<int> currentCol = [];
+      for (int row = 0; row < size; row++) {
+        int index = row * size + col;
+        currentCol.add(_grid[index].value);
+      }
+      List<int> newCol;
+      if (direction == SwipeDirection.up) {
+        newCol =
+            compactRow(row: currentCol, direction: "left"); // "left" for up
+      } else {
+        newCol =
+            compactRow(row: currentCol, direction: "right"); // "right" for down
+      }
+      for (int row = 0; row < size; row++) {
+        int index = row * size + col;
+        _grid[index].updateValue = newCol[row];
+      }
+    }
+  }
+
+  List<int> compactRow({required List<int> row, String direction = "left"}) {
+    List<int> filtered = row.where((tile) => tile != 0).toList();
+    List<int> merged = [];
+
+    if (direction == "left") {
+      for (int i = 0; i < filtered.length; i++) {
+        if (i < filtered.length - 1 && filtered[i] == filtered[i + 1]) {
+          merged.add(filtered[i] * 2);
+          i++;
+        } else {
+          merged.add(filtered[i]);
+        }
+      }
+    } else {
+      List<int> reversed = filtered.reversed.toList();
+      for (int i = 0; i < reversed.length; i++) {
+        if (i < reversed.length - 1 && reversed[i] == reversed[i + 1]) {
+          merged.add(reversed[i] * 2);
+          i++;
+        } else {
+          merged.add(reversed[i]);
+        }
+      }
+
+      merged = merged.reversed.toList();
+    }
+    while (merged.length < row.length) {
+      if (direction == "left") {
+        merged.add(0);
+      } else {
+        merged.insert(0, 0);
+      }
+    }
+    return merged;
   }
 }

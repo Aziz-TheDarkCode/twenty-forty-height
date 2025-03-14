@@ -15,11 +15,20 @@ class GameProvider extends ChangeNotifier {
 
   bool isGameOver() => gameBoard.isGameOver();
 
-  swipe(SwipeDirection direction) {
+  void swipe(SwipeDirection direction) {
     if (!gameBoard.isGameOver()) {
+      switch (direction) {
+        case SwipeDirection.left:
+        case SwipeDirection.right:
+          gameBoard.moveHorizontally(direction: direction);
+          break;
+        case SwipeDirection.up:
+        case SwipeDirection.down:
+          gameBoard.moveVertically(direction: direction);
+          break;
+      }
       gameBoard.spawnNewTile();
+      notifyListeners();
     }
-    gameBoard.moveLeft();
-    notifyListeners();
   }
 }

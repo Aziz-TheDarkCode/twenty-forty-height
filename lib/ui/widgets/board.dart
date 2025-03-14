@@ -29,8 +29,8 @@ class _BoardState extends State<Board> {
         onSwipeRight: (offset) => gameProvider.swipe(SwipeDirection.right),
         child: Container(
           padding: const EdgeInsets.all(10),
-          height: 300,
-          width: 300,
+          height: 600,
+          width: 600,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(12)),
               color: boardColor),
