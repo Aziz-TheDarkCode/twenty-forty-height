@@ -64,7 +64,7 @@ jobs:
       - name: 📤 Upload APK to GitHub Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name:  yeuleup-apk-${{ github.sha }}
+          name:  twenty-forty-eight-apk-${{ github.sha }}
           path: build/app/outputs/flutter-apk/app-release.apk
           if-no-files-found: error
 
@@ -87,6 +87,6 @@ jobs:
       - name: 📤 Upload iOS Build to GitHub Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: yeuleup-ios-build-${{ github.sha }}
+          name: twenty-forty-eight-ios-build-${{ github.sha }}
           path: build/ios/iphoneos
           if-no-files-found: error
