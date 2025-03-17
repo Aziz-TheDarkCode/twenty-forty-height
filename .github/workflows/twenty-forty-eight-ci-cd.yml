@@ -1,0 +1,92 @@
+name: 🚀 Flutter CI/CD
+
+on:
+  push:
+    branches:
+      - '**'
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    branches:
+      - '**'
+    paths-ignore:
+      - '**.md'
+
+jobs:
+  analyze:
+    name: 🔍 Analyze Code
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v3
+      - name: 🚀 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.2'
+          channel: 'stable'
+      - name: 📦 Install dependencies
+        run: flutter pub get
+      - name: 🔍 Run Flutter Analyze
+        run: flutter analyze
+
+  test:
+    name: 🧪 Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v3
+      - name: 🚀 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.2'
+          channel: 'stable'
+      - name: 📦 Install dependencies
+        run: flutter pub get
+      - name: 🏃 Run Tests
+        run: flutter test
+
+  build_android:
+    name: 🤖 Build Android APK
+    needs: [analyze, test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v3
+      - name: 🚀 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.2'
+          channel: 'stable'
+      - name: 📦 Install dependencies
+        run: flutter pub get
+      - name: 🏗️ Build APK
+        run: flutter build apk --release
+      - name: 📤 Upload APK to GitHub Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name:  yeuleup-apk-${{ github.sha }}
+          path: build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
+
+  build_ios:
+    name: 🍏 Build iOS
+    needs: [analyze, test]
+    runs-on: macos-latest
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v3
+      - name: 🚀 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.2'
+          channel: 'stable'
+      - name: 📦 Install dependencies
+        run: flutter pub get
+      - name: 🏗️ Build iOS
+        run: flutter build ios --release --no-codesign
+      - name: 📤 Upload iOS Build to GitHub Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: yeuleup-ios-build-${{ github.sha }}
+          path: build/ios/iphoneos
+          if-no-files-found: error

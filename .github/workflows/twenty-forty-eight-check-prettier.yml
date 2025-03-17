@@ -1,0 +1,48 @@
+name: 🔍 Flutter - Check Formatting
+
+on:
+  pull_request:
+    paths-ignore:
+      - '.github/**'
+    branches: [master]
+
+jobs:
+  Check-Formatting:
+    name: 🚀 Check Formatting
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🐧 Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 📥 Cache Flutter SDK
+        uses: actions/cache@v4
+        with:
+          path: ~/.flutter
+          key: flutter-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            flutter-${{ runner.os }}-
+
+      - name: 🏗 Install Flutter if not cached
+        run: |
+          if [ ! -d "~/.flutter" ]; then
+            git clone https://github.com/flutter/flutter.git -b stable --depth 1 ~/.flutter
+          fi
+          echo "$HOME/.flutter/bin" >> $GITHUB_PATH
+          flutter --version
+
+      - name: 🔍 Get all changed supported files
+        id: changed-files
+        run: |
+          echo "changed_files=$(git diff --name-only --diff-filter=ACMRT --merge-base origin/master | grep "\.dart$" | xargs)" >> $GITHUB_OUTPUT
+
+      - name: 🏗️ Check Flutter Formatting
+        if: steps.changed-files.outputs.changed_files != ''
+        run: |
+          # Check formatting for Dart files
+          for file in ${{ steps.changed-files.outputs.changed_files }}; do
+            if [[ $file == *.dart ]]; then
+              dart format --output=none --set-exit-if-changed $file || exit 1
+            fi
+          done
