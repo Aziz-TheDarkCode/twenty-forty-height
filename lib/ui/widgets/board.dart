@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swipe_detector/flutter_swipe_detector.dart';
 import 'package:provider/provider.dart';
 import 'package:twenty_forty_eight/constants/colorscheme.dart';
-import 'package:twenty_forty_eight/models/game_board.dart';
 import 'package:twenty_forty_eight/providers/game_provider.dart';
 import 'package:twenty_forty_eight/ui/widgets/tile.dart';
 
