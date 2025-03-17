@@ -23,25 +23,13 @@ class GameBoard {
       int col = index % size;
       return Tile(value: 0, row: row, col: col);
     });
-
     addRandomTile();
     addRandomTile();
-  }
-
-  void spawnNewTile() {
-    final random = Random();
-    var emptyCells = grid.where((cell) => cell.value == 0).toList();
-    if (emptyCells.isNotEmpty) {
-      int randomIndex = random.nextInt(emptyCells.length);
-      int newTileValue = random.nextDouble() < 0.9 ? 2 : 4;
-      emptyCells[randomIndex].updateValue = newTileValue;
-    }
   }
 
   void addRandomTile() {
     final random = Random();
     var emptyCells = _grid.where((cell) => cell.value == 0).toList();
-
     if (emptyCells.isNotEmpty) {
       int randomIndex = random.nextInt(emptyCells.length);
       int newValue = random.nextDouble() < 0.9 ? 2 : 4;
@@ -78,7 +66,6 @@ class GameBoard {
 
   bool move(SwipeDirection direction) {
     bool moved = false;
-    spawnNewTile();
     switch (direction) {
       case SwipeDirection.left:
       case SwipeDirection.right:
@@ -88,8 +75,6 @@ class GameBoard {
       case SwipeDirection.down:
         moved = moveVertically(direction: direction);
         break;
-      default:
-        return false;
     }
 
     if (moved) {
@@ -101,13 +86,11 @@ class GameBoard {
       gameOver = isGameOver();
       return true;
     }
-
     return false;
   }
 
   bool moveHorizontally({required SwipeDirection direction}) {
     bool moved = false;
-
     for (int row = 0; row < size; row++) {
       List<int> currentRow = [];
       for (int col = 0; col < size; col++) {

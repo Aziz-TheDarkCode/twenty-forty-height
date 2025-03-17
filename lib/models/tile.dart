@@ -7,7 +7,7 @@ class Position {
 
 class Tile {
   int _value;
-  Position _position;
+  final Position _position;
 
   int get value => _value;
   Position get position => _position;
