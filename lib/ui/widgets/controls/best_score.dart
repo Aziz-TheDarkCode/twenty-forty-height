@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:twenty_forty_eight/constants/colorscheme.dart';
 import 'package:twenty_forty_eight/providers/game_provider.dart';
 
-class Score extends StatelessWidget {
-  const Score({super.key});
+class BestScore extends StatelessWidget {
+  const BestScore({super.key});
   @override
   Widget build(BuildContext context) {
     return Consumer<GameProvider>(
@@ -17,10 +17,10 @@ class Score extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  "Best Score",
+                  "Score",
                   style: TextStyle(fontSize: 22.0, color: Colors.white),
                 ),
-                Text(gameboard.gameBoard.bestScore.toString(),
+                Text(gameboard.gameBoard.score.toString(),
                     style: TextStyle(
                         fontSize: 22.0,
                         fontWeight: FontWeight.bold,

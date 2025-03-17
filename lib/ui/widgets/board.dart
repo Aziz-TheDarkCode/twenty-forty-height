@@ -22,26 +22,32 @@ class _BoardState extends State<Board> {
   @override
   Widget build(BuildContext context) {
     final gameProvider = Provider.of<GameProvider>(context);
-    return SwipeDetector(
-        onSwipeUp: (offset) => gameProvider.swipe(SwipeDirection.up),
-        onSwipeDown: (offset) => gameProvider.swipe(SwipeDirection.down),
-        onSwipeLeft: (offset) => gameProvider.swipe(SwipeDirection.left),
-        onSwipeRight: (offset) => gameProvider.swipe(SwipeDirection.right),
-        child: Container(
-          padding: const EdgeInsets.all(10),
-          height: 600,
-          width: 600,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(12)),
-              color: boardColor),
-          child: GridView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: gameProvider.gameBoard.grid.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4, mainAxisSpacing: 10, crossAxisSpacing: 10),
-            itemBuilder: (context, index) =>
-                Tile(value: gameProvider.gameBoard.grid[index].value),
-          ),
-        ));
+    return LayoutBuilder(builder: (context, constraints) {
+      return SwipeDetector(
+          onSwipeUp: (offset) => gameProvider.swipe(SwipeDirection.up),
+          onSwipeDown: (offset) => gameProvider.swipe(SwipeDirection.down),
+          onSwipeLeft: (offset) => gameProvider.swipe(SwipeDirection.left),
+          onSwipeRight: (offset) => gameProvider.swipe(SwipeDirection.right),
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            height: MediaQuery.of(context).size.width < 500 ? 500 : 600,
+            width: MediaQuery.of(context).size.width < 500
+                ? MediaQuery.of(context).size.width - 40
+                : 600,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(12)),
+                color: boardColor),
+            child: GridView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: gameProvider.gameBoard.grid.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: gameProvider.gameBoard.size,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10),
+              itemBuilder: (context, index) =>
+                  Tile(value: gameProvider.gameBoard.grid[index].value),
+            ),
+          ));
+    });
   }
 }

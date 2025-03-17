@@ -27,7 +27,7 @@ class GameProvider extends ChangeNotifier {
           gameBoard.moveVertically(direction: direction);
           break;
       }
-      gameBoard.spawnNewTile();
+      gameBoard.move(direction);
       notifyListeners();
     }
   }
