@@ -75,8 +75,6 @@ class GameBoard {
       case SwipeDirection.down:
         moved = moveVertically(direction: direction);
         break;
-      default:
-        return false;
     }
 
     if (moved) {

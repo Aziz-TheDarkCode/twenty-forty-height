@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:twenty_forty_eight/constants/colorscheme.dart';
 
 class Tile extends StatefulWidget {
-  int value;
-  Tile({super.key, required this.value});
+  final int value;
+  const Tile({super.key, required this.value});
 
   @override
   State<Tile> createState() => _TileState();
