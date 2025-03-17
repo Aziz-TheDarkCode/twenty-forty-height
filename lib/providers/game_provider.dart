@@ -17,18 +17,10 @@ class GameProvider extends ChangeNotifier {
 
   void swipe(SwipeDirection direction) {
     if (!gameBoard.isGameOver()) {
-      switch (direction) {
-        case SwipeDirection.left:
-        case SwipeDirection.right:
-          gameBoard.moveHorizontally(direction: direction);
-          break;
-        case SwipeDirection.up:
-        case SwipeDirection.down:
-          gameBoard.moveVertically(direction: direction);
-          break;
+      bool moved = gameBoard.move(direction); // Only call move()
+      if (moved) {
+        notifyListeners(); // Notify listeners only if a move was made
       }
-      gameBoard.move(direction);
-      notifyListeners();
     }
   }
 }
