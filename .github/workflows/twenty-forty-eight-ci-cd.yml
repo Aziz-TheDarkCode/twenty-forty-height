@@ -3,14 +3,14 @@ name: 🚀 Flutter CI/CD
 on:
   push:
     branches:
-      - '**'
+      - "**"
     paths-ignore:
-      - '**.md'
+      - "**.md"
   pull_request:
     branches:
-      - '**'
+      - "**"
     paths-ignore:
-      - '**.md'
+      - "**.md"
 
 jobs:
   analyze:
@@ -22,8 +22,8 @@ jobs:
       - name: 🚀 Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.2'
-          channel: 'stable'
+          flutter-version: "3.29.2"
+          channel: "stable"
       - name: 📦 Install dependencies
         run: flutter pub get
       - name: 🔍 Run Flutter Analyze
@@ -38,8 +38,8 @@ jobs:
       - name: 🚀 Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.2'
-          channel: 'stable'
+          flutter-version: "3.29.2"
+          channel: "stable"
       - name: 📦 Install dependencies
         run: flutter pub get
       - name: 🏃 Run Tests
@@ -55,8 +55,8 @@ jobs:
       - name: 🚀 Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.2'
-          channel: 'stable'
+          flutter-version: "3.29.2"
+          channel: "stable"
       - name: 📦 Install dependencies
         run: flutter pub get
       - name: 🏗️ Build APK
@@ -64,7 +64,7 @@ jobs:
       - name: 📤 Upload APK to GitHub Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name:  twenty-forty-eight-apk-${{ github.sha }}
+          name: twenty-forty-eight-apk-${{ github.sha }}
           path: build/app/outputs/flutter-apk/app-release.apk
           if-no-files-found: error
 
@@ -78,8 +78,8 @@ jobs:
       - name: 🚀 Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.2'
-          channel: 'stable'
+          flutter-version: "3.29.2"
+          channel: "stable"
       - name: 📦 Install dependencies
         run: flutter pub get
       - name: 🏗️ Build iOS
@@ -90,3 +90,31 @@ jobs:
           name: twenty-forty-eight-ios-build-${{ github.sha }}
           path: build/ios/iphoneos
           if-no-files-found: error
+  build_preview:
+    name: 🌍 Build the application previewer
+    needs: [analyze, test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v3
+
+      - name: 🚀 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.29.2"
+          channel: "stable"
+
+      - name: 🌐 Enable Flutter Web
+        run: flutter config --enable-web
+
+      - name: 📦 Install dependencies
+        run: flutter pub get
+
+      - name: 🏗️ Build Flutter Web
+        run: flutter build web --release --base-href "/${{ github.event.repository.name }}/"
+
+      - name: 🚀 Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: build/web
