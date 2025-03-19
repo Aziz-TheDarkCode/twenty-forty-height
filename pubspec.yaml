@@ -7,9 +7,11 @@ environment:
   sdk: ^3.6.0
 
 dependencies:
+  device_preview: ^1.2.0
   flutter:
     sdk: flutter
   flutter_swipe_detector: ^2.0.0
+  google_fonts: ^6.2.1
   provider: ^6.1.2
 
 dev_dependencies:

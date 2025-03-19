@@ -39,7 +39,7 @@ class _BoardState extends State<Board> {
           height: boardHeight, // Adaptive height
           width: screenWidth < 500 ? screenWidth - 40 : 600,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(12)),
+            borderRadius: BorderRadius.all(Radius.circular(20)),
             color: boardColor,
           ),
           child: GridView.builder(

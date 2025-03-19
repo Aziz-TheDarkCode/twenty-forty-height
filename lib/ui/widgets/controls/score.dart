@@ -17,8 +17,8 @@ class Score extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  "Best Score",
-                  style: TextStyle(fontSize: 22.0, color: Colors.white),
+                  "Best",
+                  style: TextStyle(fontSize: 20.0, color: Colors.white),
                 ),
                 Text(gameboard.gameBoard.bestScore.toString(),
                     style: TextStyle(

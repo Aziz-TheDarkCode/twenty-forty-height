@@ -22,12 +22,12 @@ class _TileState extends State<Tile> {
         child: Container(
             decoration: BoxDecoration(
                 color: tileColors[widget.value],
-                borderRadius: BorderRadius.all(Radius.circular(6))),
+                borderRadius: BorderRadius.all(Radius.circular(12))),
             child: Center(
               child: Text(
-                widget.value == 0 ? "" : widget.value.toString(),
+                widget.value == 0 ? "" : tileEmojis[widget.value].toString(),
                 style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 40,
                     fontWeight: FontWeight.bold,
                     color: widget.value < 8 ? textColor : Colors.white),
               ),
