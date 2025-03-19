@@ -108,14 +108,20 @@ jobs:
           flutter-version: "3.29.2"
           channel: "stable"
 
-      - name: 🌐 Enable Flutter Web
-        run: flutter config --enable-web
 
       - name: 📦 Install dependencies
         run: flutter pub get
+        working-directory: /${{github.event.repository.name}}
 
       - name: 🏗️ Build Flutter Web
-        run: flutter build web --release --base-href "/${{ github.event.repository.name }}/"
+        run: flutter build web --base-href "/${{ github.event.repository.name }}/"
+        working-directory: /${{github.event.repository.name}}
+
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: build/web/
 
       - name: 🚀 Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4

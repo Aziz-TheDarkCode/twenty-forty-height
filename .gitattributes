@@ -4,8 +4,9 @@
 *.kt linguist-detectable=false
 *.rb linguist-detectable=false
 *.js linguist-detectable=false
-*.swift linguist-detectable=false
 *.cmake linguist-detectable=false
+*.swift linguist-detectable=false
+*.js linguist-detectable=false
 *.gradle linguist-detectable=false
 *.json linguist-detectable=false
 *.plist linguist-detectable=false
